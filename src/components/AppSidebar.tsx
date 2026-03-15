@@ -9,15 +9,11 @@ import {
   Download,
   RefreshCw,
   Building2,
-  ChevronDown,
-  Sparkles,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { BRANCHES } from "@/lib/constants";
-import { useState } from "react";
 
 import {
   Sidebar,
