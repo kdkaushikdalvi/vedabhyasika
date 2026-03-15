@@ -104,17 +104,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" className="bg-white border-r">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-3">
-          <img src={logo} alt="वेद अभ्यासिका" className="h-10 w-auto shrink-0" />
-          {!collapsed && (
-            <div className="min-w-0">
-              <h1 className="text-sm font-semibold leading-tight text-sidebar-foreground truncate">
-                वेद अभ्यासिका
-              </h1>
-              <p className="text-xs text-muted-foreground truncate">
-                शाखा क्र. 01 | महादेवनगर
-              </p>
-            </div>
-          )}
+          <img src={logo} alt="वेद अभ्यासिका" className="h-15 w-full shrink-0" />
         </div>
       </SidebarHeader>
 
