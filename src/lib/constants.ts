@@ -26,7 +26,7 @@ export const BRANCHES: Branch[] = [
     id: "branch-1",
     name: "शाखा 1. महादेवनगर",
     halls: [
-      { id: "hall-b", name: "Hall B", desks: 95, fee: 900 },
+      { id: "hall-b", name: "Hall B", desks: 21, fee: 900 },
       { id: "hall-c", name: "Hall C", desks: 48, fee: 900 },
       { id: "hall-d", name: "Hall D", desks: 65, fee: 900 },
     ],
@@ -43,6 +43,7 @@ export const BRANCHES: Branch[] = [
 // Flat list including Hall D AC (hidden from sidebar but used in HallView toggle)
 export const HALLS: Hall[] = [
   ...BRANCHES.flatMap((b) => b.halls),
+  { id: "hall-b-reserve", name: "Hall B Reserve", desks: 95, fee: 900 },
   { id: "hall-d-ac", name: "Hall D AC", desks: 19, fee: 1200 },
 ];
 

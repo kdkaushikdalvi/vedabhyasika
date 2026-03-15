@@ -4,7 +4,6 @@ import { DeskGrid } from "@/components/DeskGrid";
 import { AdmissionForm } from "@/components/AdmissionForm";
 import { StudentDetails } from "@/components/StudentDetails";
 import { HALLS, type DeskStatus } from "@/lib/constants";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export default function HallView() {
   const { hallId } = useParams<{ hallId: string }>();
@@ -13,7 +12,16 @@ export default function HallView() {
   const isHallD = hallId === "hall-d" || hallId === "hall-d-ac";
   const [dMode, setDMode] = useState<"normal" | "ac">(hallId === "hall-d-ac" ? "ac" : "normal");
 
-  const effectiveHallId = isHallD ? (dMode === "ac" ? "hall-d-ac" : "hall-d") : hallId;
+  // Hall B merged view
+  const isHallB = hallId === "hall-b" || hallId === "hall-b-reserve";
+  const [bMode, setBMode] = useState<"normal" | "reserve">(hallId === "hall-b-reserve" ? "reserve" : "normal");
+
+  const effectiveHallId = isHallD
+    ? dMode === "ac" ? "hall-d-ac" : "hall-d"
+    : isHallB
+      ? bMode === "reserve" ? "hall-b-reserve" : "hall-b"
+      : hallId;
+
   const hall = HALLS.find((h) => h.id === effectiveHallId);
 
   const [admissionOpen, setAdmissionOpen] = useState(false);
@@ -33,30 +41,52 @@ export default function HallView() {
     }
   };
 
+  const hasToggle = isHallD || isHallB;
+  const toggleOptions = isHallD
+    ? [
+        { value: "normal", label: "Normal", icon: "🪑" },
+        { value: "ac", label: "AC", icon: "❄️" },
+      ]
+    : [
+        { value: "normal", label: "Normal", icon: "🪑" },
+        { value: "reserve", label: "Reserve", icon: "🔒" },
+      ];
+  const activeToggle = isHallD ? dMode : bMode;
+  const setToggle = isHallD
+    ? (v: string) => setDMode(v as "normal" | "ac")
+    : (v: string) => setBMode(v as "normal" | "reserve");
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold">{isHallD ? "Hall D" : hall.name}</h1>
+          <h1 className="text-2xl font-semibold">
+            {isHallD ? "Hall D" : isHallB ? "Hall B" : hall.name}
+          </h1>
           <p className="text-sm text-muted-foreground">
             {hall.desks} desks — ₹{hall.fee}/month
           </p>
         </div>
 
-        {isHallD && (
-          <ToggleGroup
-            type="single"
-            value={dMode}
-            onValueChange={(v) => v && setDMode(v as "normal" | "ac")}
-            className="bg-muted rounded-lg p-0.5"
-          >
-            <ToggleGroupItem value="normal" className="rounded-md px-4 text-sm data-[state=on]:bg-background data-[state=on]:shadow-sm">
-              Normal
-            </ToggleGroupItem>
-            <ToggleGroupItem value="ac" className="rounded-md px-4 text-sm data-[state=on]:bg-background data-[state=on]:shadow-sm">
-              AC
-            </ToggleGroupItem>
-          </ToggleGroup>
+        {hasToggle && (
+          <div className="flex rounded-xl bg-muted/80 p-1 shadow-inner">
+            {toggleOptions.map((opt) => (
+              <button
+                key={opt.value}
+                onClick={() => setToggle(opt.value)}
+                className={`
+                  relative flex items-center gap-1.5 rounded-lg px-5 py-2 text-sm font-medium transition-all duration-200
+                  ${activeToggle === opt.value
+                    ? "bg-primary text-primary-foreground shadow-md scale-[1.02]"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }
+                `}
+              >
+                <span className="text-base">{opt.icon}</span>
+                {opt.label}
+              </button>
+            ))}
+          </div>
         )}
       </div>
 
