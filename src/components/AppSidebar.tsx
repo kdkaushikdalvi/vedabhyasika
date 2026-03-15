@@ -9,11 +9,13 @@ import {
   Download,
   RefreshCw,
   Building2,
+  ChevronDown,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "@/assets/logo.png";
-import { HALLS } from "@/lib/constants";
+import { BRANCHES } from "@/lib/constants";
+import { useState } from "react";
 
 import {
   Sidebar,
@@ -28,16 +30,22 @@ import {
   SidebarFooter,
   useSidebar,
 } from "@/components/ui/sidebar";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
-const mainNav = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard },
-];
-
-const hallNav = HALLS.map((h) => ({
-  title: h.name,
-  url: `/hall/${h.id}`,
-  icon: Building2,
-}));
+const iconColors: Record<string, string> = {
+  Dashboard: "text-violet-500",
+  Students: "text-blue-500",
+  "Student Reminders": "text-amber-500",
+  Analytics: "text-emerald-500",
+  Reports: "text-rose-500",
+  "नियमावली": "text-orange-500",
+  About: "text-cyan-500",
+  "Install App": "text-indigo-500",
+};
 
 const manageNav = [
   { title: "Students", url: "/students", icon: Users },
@@ -55,9 +63,21 @@ const infoNav = [
 ];
 
 export function AppSidebar() {
-  const { state } = useSidebar();
+  const { state, setOpenMobile, isMobile } = useSidebar();
   const collapsed = state === "collapsed";
   const location = useLocation();
+  const [openBranch, setOpenBranch] = useState<string>(BRANCHES[0].id);
+
+  const closeSidebar = () => {
+    if (isMobile) setOpenMobile(false);
+  };
+
+  const handleRefresh = () => {
+    if ("caches" in window) {
+      caches.keys().then((names) => names.forEach((name) => caches.delete(name)));
+    }
+    window.location.reload();
+  };
 
   const renderItems = (items: { title: string; url: string; icon: React.ComponentType<{ className?: string }> }[]) => (
     <SidebarMenu>
@@ -69,8 +89,9 @@ export function AppSidebar() {
               end={item.url === "/"}
               className="hover:bg-sidebar-accent/60"
               activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+              onClick={closeSidebar}
             >
-              <item.icon className="mr-2 h-4 w-4 shrink-0" />
+              <item.icon className={`mr-2 h-4 w-4 shrink-0 ${iconColors[item.title] || "text-primary"}`} />
               {!collapsed && <span>{item.title}</span>}
             </NavLink>
           </SidebarMenuButton>
@@ -80,7 +101,7 @@ export function AppSidebar() {
   );
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="bg-white border-r">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-3">
           <img src={logo} alt="वेद अभ्यासिका" className="h-10 w-auto shrink-0" />
@@ -98,13 +119,69 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
+        {/* Dashboard */}
         <SidebarGroup>
-          <SidebarGroupContent>{renderItems(mainNav)}</SidebarGroupContent>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <NavLink
+                    to="/"
+                    end
+                    className="hover:bg-sidebar-accent/60"
+                    activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                    onClick={closeSidebar}
+                  >
+                    <LayoutDashboard className="mr-2 h-4 w-4 shrink-0 text-violet-500" />
+                    {!collapsed && <span>Dashboard</span>}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
         </SidebarGroup>
 
+        {/* Branches with accordion */}
         <SidebarGroup>
-          <SidebarGroupLabel>Halls</SidebarGroupLabel>
-          <SidebarGroupContent>{renderItems(hallNav)}</SidebarGroupContent>
+          <SidebarGroupLabel>Branches</SidebarGroupLabel>
+          <SidebarGroupContent>
+            {BRANCHES.map((branch) => (
+              <Collapsible
+                key={branch.id}
+                open={openBranch === branch.id}
+                onOpenChange={(open) => setOpenBranch(open ? branch.id : "")}
+              >
+                <CollapsibleTrigger className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-sidebar-accent/60 transition-colors">
+                  <Building2 className="h-4 w-4 shrink-0 text-purple-500" />
+                  {!collapsed && (
+                    <>
+                      <span className="flex-1 text-left truncate">{branch.name}</span>
+                      <ChevronDown className={`h-3.5 w-3.5 shrink-0 text-muted-foreground transition-transform duration-200 ${openBranch === branch.id ? "rotate-180" : ""}`} />
+                    </>
+                  )}
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenu className="pl-3 mt-0.5">
+                    {branch.halls.map((hall) => (
+                      <SidebarMenuItem key={hall.id}>
+                        <SidebarMenuButton asChild>
+                          <NavLink
+                            to={`/hall/${hall.id}`}
+                            className="hover:bg-sidebar-accent/60"
+                            activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                            onClick={closeSidebar}
+                          >
+                            <span className="h-2 w-2 rounded-full bg-primary/60 mr-2 shrink-0" />
+                            {!collapsed && <span>{hall.name}</span>}
+                          </NavLink>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </CollapsibleContent>
+              </Collapsible>
+            ))}
+          </SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarGroup>
@@ -123,14 +200,25 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-2">
+      <SidebarFooter className="p-2 space-y-1">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <NavLink to="/install" className="hover:bg-sidebar-accent/60" activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium">
-                <Download className="mr-2 h-4 w-4 shrink-0" />
+              <NavLink
+                to="/install"
+                className="hover:bg-sidebar-accent/60"
+                activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                onClick={closeSidebar}
+              >
+                <Download className="mr-2 h-4 w-4 shrink-0 text-indigo-500" />
                 {!collapsed && <span>Install App</span>}
               </NavLink>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={handleRefresh} className="hover:bg-sidebar-accent/60 cursor-pointer">
+              <RefreshCw className="mr-2 h-4 w-4 shrink-0 text-teal-500" />
+              {!collapsed && <span>Refresh App</span>}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
