@@ -16,10 +16,6 @@ export function AppLayout({ children }: AppLayoutProps) {
             <SidebarTrigger />
             <div className="flex items-center gap-2 md:hidden">
               <img src={logo} alt="वेद अभ्यासिका" className="h-8 w-auto" />
-              <div>
-                <p className="text-sm font-semibold leading-tight">वेद अभ्यासिका</p>
-                <p className="text-xs text-muted-foreground">शाखा क्र. 01</p>
-              </div>
             </div>
           </header>
           <main className="flex-1 overflow-auto p-4 md:p-6">
