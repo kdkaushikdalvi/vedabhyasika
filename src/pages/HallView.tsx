@@ -90,15 +90,15 @@ export default function HallView() {
         )}
       </div>
 
-      <div className="flex items-center gap-5 text-xs">
-        <span className="flex items-center gap-2 rounded-full bg-green-500/10 px-3 py-1.5 text-green-700 font-medium">
-          <span className="h-2.5 w-2.5 rounded-full bg-green-500 shadow-sm shadow-green-500/40" /> Available
+      <div className="flex items-center gap-4 text-xs">
+        <span className="flex items-center gap-2 rounded-full bg-success/10 px-3 py-1.5 font-semibold text-success">
+          <span className="h-2.5 w-2.5 rounded-full bg-success shadow-sm" /> Available
         </span>
-        <span className="flex items-center gap-2 rounded-full bg-muted px-3 py-1.5 text-muted-foreground font-medium opacity-70">
-          <span className="h-2.5 w-2.5 rounded-full bg-gray-400" /> Occupied
+        <span className="flex items-center gap-2 rounded-full bg-muted px-3 py-1.5 font-semibold text-muted-foreground opacity-70">
+          <span className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40" /> Occupied
         </span>
-        <span className="flex items-center gap-2 rounded-full bg-red-500/10 px-3 py-1.5 text-red-600 font-medium">
-          <span className="h-2.5 w-2.5 rounded-full bg-red-500 shadow-sm shadow-red-500/40" /> Expired
+        <span className="flex items-center gap-2 rounded-full bg-destructive/10 px-3 py-1.5 font-semibold text-destructive">
+          <span className="h-2.5 w-2.5 rounded-full bg-destructive shadow-sm" /> Expired
         </span>
       </div>
 

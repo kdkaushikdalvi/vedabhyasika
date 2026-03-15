@@ -52,10 +52,10 @@ export function DeskGrid({ hallId, onDeskClick }: DeskGridProps) {
             whileTap={{ scale: 0.95 }}
             whileHover={{ scale: 1.05 }}
             onClick={() => onDeskClick(desk, status, studentId)}
-            className={`aspect-square rounded-lg flex items-center justify-center text-sm font-medium shadow-sm transition-colors relative ${statusClass[status]}`}
+            className={`aspect-square rounded-xl flex items-center justify-center text-base font-bold shadow-sm transition-colors relative ${statusClass[status]}`}
           >
             {status === "occupied" && (
-              <Check className="absolute top-0.5 right-0.5 h-3 w-3 opacity-60" />
+              <Check className="absolute top-0.5 right-0.5 h-3 w-3 opacity-50" />
             )}
             {desk}
           </motion.button>
