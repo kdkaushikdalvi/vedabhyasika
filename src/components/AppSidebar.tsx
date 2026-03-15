@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import logo from "@/assets/logo.png";
+import logoWide from "@/assets/logo-wide.png";
 import { HALLS } from "@/lib/constants";
 
 import {
