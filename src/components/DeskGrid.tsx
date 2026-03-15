@@ -1,6 +1,7 @@
 import { HALLS, type DeskStatus } from "@/lib/constants";
 import { useStore } from "@/lib/store";
 import { motion } from "framer-motion";
+import { Check } from "lucide-react";
 
 interface DeskGridProps {
   hallId: string;
@@ -51,8 +52,11 @@ export function DeskGrid({ hallId, onDeskClick }: DeskGridProps) {
             whileTap={{ scale: 0.95 }}
             whileHover={{ scale: 1.05 }}
             onClick={() => onDeskClick(desk, status, studentId)}
-            className={`aspect-square rounded-lg flex items-center justify-center text-sm font-medium shadow-sm transition-colors ${statusClass[status]}`}
+            className={`aspect-square rounded-lg flex items-center justify-center text-sm font-medium shadow-sm transition-colors relative ${statusClass[status]}`}
           >
+            {status === "occupied" && (
+              <Check className="absolute top-0.5 right-0.5 h-3 w-3 opacity-60" />
+            )}
             {desk}
           </motion.button>
         );

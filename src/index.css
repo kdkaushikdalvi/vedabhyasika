@@ -77,15 +77,23 @@
   .desk-available {
     background-color: hsl(142 71% 45%);
     color: white;
+    box-shadow: 0 2px 8px hsl(142 71% 45% / 0.3);
   }
   .desk-occupied {
-    background-color: hsl(220 14% 90%);
-    color: hsl(220 20% 30%);
-    border: 1px solid hsl(220 13% 82%);
+    background-color: hsl(220 14% 94%);
+    color: hsl(220 10% 55%);
+    border: 1px solid hsl(220 13% 88%);
+    opacity: 0.6;
   }
   .desk-expired {
     background-color: hsl(0 84% 60%);
     color: white;
+    box-shadow: 0 2px 8px hsl(0 84% 60% / 0.3);
+    animation: pulse-expired 2s ease-in-out infinite;
+  }
+  @keyframes pulse-expired {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
   }
 }
 #lovable-badge { display: none !important; }
