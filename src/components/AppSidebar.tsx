@@ -57,7 +57,7 @@ export function AppSidebar() {
   const { state, setOpenMobile, isMobile } = useSidebar();
   const collapsed = state === "collapsed";
   const location = useLocation();
-  const [openBranch, setOpenBranch] = useState<string>(BRANCHES[0].id);
+  
 
   const closeSidebar = () => {
     if (isMobile) setOpenMobile(false);
