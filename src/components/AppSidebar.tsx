@@ -142,7 +142,7 @@ export function AppSidebar() {
                     <span className="flex-1 text-left truncate">{branch.name}</span>
                   )}
                 </div>
-                <CollapsibleContent>
+                <div>
                   <SidebarMenu className="pl-4 mt-1 space-y-0.5 border-l-2 border-primary/10 ml-4">
                     {branch.halls.map((hall) => {
                       const isActive = location.pathname === `/hall/${hall.id}`;
