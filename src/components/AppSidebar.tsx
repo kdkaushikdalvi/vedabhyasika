@@ -12,6 +12,7 @@ import {
   ChevronDown,
   Sparkles,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import logo from "@/assets/logo.png";
@@ -100,12 +101,20 @@ export function AppSidebar() {
         <div className="flex items-center gap-3">
           <img src={logo} alt="वेद अभ्यासिका" className="h-12 w-20 shrink-0" />
         </div>
-        {!collapsed && (
-          <div className="mt-2 flex items-center gap-1.5 px-1">
-            <Sparkles className="h-3 w-3 text-primary" />
-            <span className="text-[11px] font-medium text-primary/70 tracking-wide uppercase">Study Room Manager</span>
-          </div>
-        )}
+        <AnimatePresence>
+          {!collapsed && (
+            <motion.div
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              transition={{ duration: 0.2 }}
+              className="mt-2 flex items-center gap-1.5 px-1"
+            >
+              <Sparkles className="h-3 w-3 text-primary" />
+              <span className="text-[11px] font-medium text-primary/70 tracking-wide uppercase">Study Room Manager</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </SidebarHeader>
 
       <SidebarContent className="px-2">
