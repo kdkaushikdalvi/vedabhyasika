@@ -8,12 +8,41 @@ export const INSTITUTE = {
   timings: "सकाळी 7:00 ते रात्री 11:00",
 };
 
-export const HALLS = [
-  { id: "hall-b", name: "Hall B", desks: 95, fee: 900 },
-  { id: "hall-c", name: "Hall C", desks: 48, fee: 900 },
-  { id: "hall-d", name: "Hall D", desks: 65, fee: 900 },
-  { id: "hall-d-ac", name: "Hall D AC", desks: 19, fee: 1200 },
-] as const;
+export interface Hall {
+  id: string;
+  name: string;
+  desks: number;
+  fee: number;
+}
+
+export interface Branch {
+  id: string;
+  name: string;
+  halls: Hall[];
+}
+
+export const BRANCHES: Branch[] = [
+  {
+    id: "branch-1",
+    name: "शाखा 1. महादेवनगर",
+    halls: [
+      { id: "hall-b", name: "Hall B", desks: 95, fee: 900 },
+      { id: "hall-c", name: "Hall C", desks: 48, fee: 900 },
+      { id: "hall-d", name: "Hall D", desks: 65, fee: 900 },
+      { id: "hall-d-ac", name: "Hall D AC", desks: 19, fee: 1200 },
+    ],
+  },
+  {
+    id: "branch-2",
+    name: "शाखा 2. गोपाळपट्टी",
+    halls: [
+      { id: "hall-a", name: "Hall A", desks: 50, fee: 800 },
+    ],
+  },
+];
+
+// Flat list for backward compatibility
+export const HALLS: Hall[] = BRANCHES.flatMap((b) => b.halls);
 
 export const REGISTRATION_FEE = 100;
 
