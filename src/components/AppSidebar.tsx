@@ -104,7 +104,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" className="bg-white border-r">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-3">
-          <img src={logo} alt="वेद अभ्यासिका" className="h-15 w-full shrink-0" />
+          <img src={logo} alt="वेद अभ्यासिका" className="h-12 w-20 shrink-0" />
         </div>
       </SidebarHeader>
 
