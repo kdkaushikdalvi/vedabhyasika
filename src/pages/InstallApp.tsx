@@ -36,16 +36,30 @@ export default function InstallApp() {
         Install वेद अभ्यासिका on your device for quick access.
       </p>
 
-      <div className="space-y-3">
-        <Button className="w-full gap-2" size="lg" onClick={handleInstall} disabled={!deferredPrompt}>
-          <Download className="h-5 w-5" />
-          {deferredPrompt ? "Install App" : "Open in browser menu to install"}
-        </Button>
+      <div className="space-y-4">
+        {/* Android */}
+        <div className="rounded-xl border bg-card p-4 space-y-2">
+          <h2 className="text-sm font-semibold flex items-center gap-2">📱 Android</h2>
+          <Button className="w-full gap-2" size="lg" onClick={handleInstall} disabled={!deferredPrompt}>
+            <Download className="h-5 w-5" />
+            {deferredPrompt ? "Install App" : "Open in Chrome → Tap Install"}
+          </Button>
+          <p className="text-xs text-muted-foreground">
+            Tap the button above or use Chrome menu → <strong>Install app</strong>
+          </p>
+        </div>
 
-        <p className="text-xs text-muted-foreground">
-          On iPhone: Tap <strong>Share</strong> → <strong>Add to Home Screen</strong>
-        </p>
+        {/* iOS */}
+        <div className="rounded-xl border bg-card p-4 space-y-2">
+          <h2 className="text-sm font-semibold flex items-center gap-2">🍎 iPhone / iPad</h2>
+          <ol className="text-sm text-muted-foreground list-decimal list-inside space-y-1">
+            <li>Open in <strong>Safari</strong></li>
+            <li>Tap <strong>Share</strong> (⬆️)</li>
+            <li>Tap <strong>Add to Home Screen</strong></li>
+          </ol>
+        </div>
 
+        {/* Refresh */}
         <Button variant="outline" className="w-full gap-2" size="lg" onClick={handleRefresh}>
           <RefreshCw className="h-5 w-5" /> Refresh App
         </Button>
