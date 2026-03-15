@@ -40,8 +40,11 @@ export const BRANCHES: Branch[] = [
   },
 ];
 
-// Flat list for backward compatibility
-export const HALLS: Hall[] = BRANCHES.flatMap((b) => b.halls);
+// Flat list including Hall D AC (hidden from sidebar but used in HallView toggle)
+export const HALLS: Hall[] = [
+  ...BRANCHES.flatMap((b) => b.halls),
+  { id: "hall-d-ac", name: "Hall D AC", desks: 19, fee: 1200 },
+];
 
 export const REGISTRATION_FEE = 100;
 
