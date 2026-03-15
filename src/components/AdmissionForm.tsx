@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useStore } from "@/lib/store";
 import { HALLS } from "@/lib/constants";
 
@@ -17,7 +16,6 @@ export function AdmissionForm({ open, onClose, hallId, deskNumber }: AdmissionFo
   const { addStudent } = useStore();
   const [fullName, setFullName] = useState("");
   const [mobile, setMobile] = useState("");
-  const [pin, setPin] = useState("");
 
   const hall = HALLS.find((h) => h.id === hallId);
 
@@ -26,45 +24,29 @@ export function AdmissionForm({ open, onClose, hallId, deskNumber }: AdmissionFo
     addStudent({
       full_name: fullName.trim(),
       mobile_number: mobile.trim(),
-      pin: pin || undefined,
       hall_name: hallId,
       desk_number: deskNumber,
     });
     setFullName("");
     setMobile("");
-    setPin("");
     onClose();
   };
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>New Admission</DialogTitle>
-          <p className="text-sm text-muted-foreground">
-            {hall?.name} — Desk {deskNumber}
-          </p>
+          <DialogTitle>{hall?.name} — Desk {deskNumber}</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="fullName">Full Name</Label>
-            <Input id="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="विद्यार्थ्याचे नाव" />
-          </div>
-          <div>
-            <Label htmlFor="mobile">Mobile Number</Label>
-            <Input id="mobile" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder="9876543210" type="tel" />
-          </div>
-          <div>
-            <Label htmlFor="pin">PIN (Optional)</Label>
-            <Input id="pin" value={pin} onChange={(e) => setPin(e.target.value)} placeholder="4 digit PIN" maxLength={4} />
-          </div>
+        <div className="space-y-3">
+          <Input value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Full Name" autoFocus />
+          <Input value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder="Mobile Number" type="tel" />
         </div>
 
-        <DialogFooter className="gap-2">
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={handleSave} disabled={!fullName.trim() || !mobile.trim()}>Save Admission</Button>
-        </DialogFooter>
+        <Button onClick={handleSave} disabled={!fullName.trim() || !mobile.trim()} className="w-full">
+          Save Admission
+        </Button>
       </DialogContent>
     </Dialog>
   );
