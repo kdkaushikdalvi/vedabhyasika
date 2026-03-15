@@ -10,9 +10,10 @@ import {
   RefreshCw,
   Building2,
   ChevronDown,
+  Sparkles,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { BRANCHES } from "@/lib/constants";
 import { useState } from "react";
@@ -35,17 +36,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-
-const iconColors: Record<string, string> = {
-  Dashboard: "text-violet-500",
-  Students: "text-blue-500",
-  "Student Reminders": "text-amber-500",
-  Analytics: "text-emerald-500",
-  Reports: "text-rose-500",
-  "नियमावली": "text-orange-500",
-  About: "text-cyan-500",
-  "Install App": "text-indigo-500",
-};
 
 const manageNav = [
   { title: "Students", url: "/students", icon: Users },
@@ -79,19 +69,22 @@ export function AppSidebar() {
     window.location.reload();
   };
 
+  const navLinkClasses = "rounded-lg transition-all duration-200 hover:bg-sidebar-accent hover:translate-x-0.5";
+  const activeClasses = "bg-primary text-primary-foreground font-semibold shadow-md shadow-primary/25 hover:bg-primary/90 hover:translate-x-0";
+
   const renderItems = (items: { title: string; url: string; icon: React.ComponentType<{ className?: string }> }[]) => (
-    <SidebarMenu>
+    <SidebarMenu className="space-y-0.5">
       {items.map((item) => (
         <SidebarMenuItem key={item.url}>
           <SidebarMenuButton asChild>
             <NavLink
               to={item.url}
               end={item.url === "/"}
-              className="hover:bg-sidebar-accent/60"
-              activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+              className={navLinkClasses}
+              activeClassName={activeClasses}
               onClick={closeSidebar}
             >
-              <item.icon className={`mr-2 h-4 w-4 shrink-0 ${iconColors[item.title] || "text-primary"}`} />
+              <item.icon className="mr-2 h-4 w-4 shrink-0" />
               {!collapsed && <span>{item.title}</span>}
             </NavLink>
           </SidebarMenuButton>
@@ -101,14 +94,21 @@ export function AppSidebar() {
   );
 
   return (
-    <Sidebar collapsible="icon" className="bg-white border-r">
-      <SidebarHeader className="p-4">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
+      {/* Header with gradient accent */}
+      <SidebarHeader className="p-4 pb-3">
         <div className="flex items-center gap-3">
           <img src={logo} alt="वेद अभ्यासिका" className="h-12 w-20 shrink-0" />
         </div>
+        {!collapsed && (
+          <div className="mt-2 flex items-center gap-1.5 px-1">
+            <Sparkles className="h-3 w-3 text-primary" />
+            <span className="text-[11px] font-medium text-primary/70 tracking-wide uppercase">Study Room Manager</span>
+          </div>
+        )}
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="px-2">
         {/* Dashboard */}
         <SidebarGroup>
           <SidebarGroupContent>
@@ -118,11 +118,11 @@ export function AppSidebar() {
                   <NavLink
                     to="/"
                     end
-                    className="hover:bg-sidebar-accent/60"
-                    activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                    className={navLinkClasses}
+                    activeClassName={activeClasses}
                     onClick={closeSidebar}
                   >
-                    <LayoutDashboard className="mr-2 h-4 w-4 shrink-0 text-violet-500" />
+                    <LayoutDashboard className="mr-2 h-4 w-4 shrink-0" />
                     {!collapsed && <span>Dashboard</span>}
                   </NavLink>
                 </SidebarMenuButton>
@@ -131,9 +131,11 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Branches with accordion */}
+        {/* Branches */}
         <SidebarGroup>
-          <SidebarGroupLabel>Branches</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[11px] uppercase tracking-wider text-sidebar-foreground/40 font-semibold">
+            Branches
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             {BRANCHES.map((branch) => (
               <Collapsible
@@ -141,32 +143,37 @@ export function AppSidebar() {
                 open={openBranch === branch.id}
                 onOpenChange={(open) => setOpenBranch(open ? branch.id : "")}
               >
-                <CollapsibleTrigger className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-sidebar-accent/60 transition-colors">
-                  <Building2 className="h-4 w-4 shrink-0 text-purple-500" />
+                <CollapsibleTrigger className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium hover:bg-sidebar-accent transition-all duration-200 group">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/10 shrink-0">
+                    <Building2 className="h-3.5 w-3.5 text-primary" />
+                  </div>
                   {!collapsed && (
                     <>
                       <span className="flex-1 text-left truncate">{branch.name}</span>
-                      <ChevronDown className={`h-3.5 w-3.5 shrink-0 text-muted-foreground transition-transform duration-200 ${openBranch === branch.id ? "rotate-180" : ""}`} />
+                      <ChevronDown className={`h-3.5 w-3.5 shrink-0 text-sidebar-foreground/40 transition-transform duration-300 ${openBranch === branch.id ? "rotate-180" : ""}`} />
                     </>
                   )}
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <SidebarMenu className="pl-3 mt-0.5">
-                    {branch.halls.map((hall) => (
-                      <SidebarMenuItem key={hall.id}>
-                        <SidebarMenuButton asChild>
-                          <NavLink
-                            to={`/hall/${hall.id}`}
-                            className="hover:bg-sidebar-accent/60"
-                            activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
-                            onClick={closeSidebar}
-                          >
-                            <span className="h-2 w-2 rounded-full bg-primary/60 mr-2 shrink-0" />
-                            {!collapsed && <span>{hall.name}</span>}
-                          </NavLink>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
+                  <SidebarMenu className="pl-4 mt-1 space-y-0.5 border-l-2 border-primary/10 ml-4">
+                    {branch.halls.map((hall) => {
+                      const isActive = location.pathname === `/hall/${hall.id}`;
+                      return (
+                        <SidebarMenuItem key={hall.id}>
+                          <SidebarMenuButton asChild>
+                            <NavLink
+                              to={`/hall/${hall.id}`}
+                              className={navLinkClasses}
+                              activeClassName={activeClasses}
+                              onClick={closeSidebar}
+                            >
+                              <span className={`h-2 w-2 rounded-full mr-2 shrink-0 transition-colors ${isActive ? "bg-primary-foreground" : "bg-primary/40"}`} />
+                              {!collapsed && <span>{hall.name}</span>}
+                            </NavLink>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      );
+                    })}
                   </SidebarMenu>
                 </CollapsibleContent>
               </Collapsible>
@@ -175,39 +182,39 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Manage</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[11px] uppercase tracking-wider text-sidebar-foreground/40 font-semibold">Manage</SidebarGroupLabel>
           <SidebarGroupContent>{renderItems(manageNav)}</SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Insights</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[11px] uppercase tracking-wider text-sidebar-foreground/40 font-semibold">Insights</SidebarGroupLabel>
           <SidebarGroupContent>{renderItems(insightNav)}</SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Info</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[11px] uppercase tracking-wider text-sidebar-foreground/40 font-semibold">Info</SidebarGroupLabel>
           <SidebarGroupContent>{renderItems(infoNav)}</SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-2 space-y-1">
+      <SidebarFooter className="p-2 mx-2 mb-2 space-y-0.5 rounded-xl bg-sidebar-accent/50 border border-sidebar-border">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <NavLink
                 to="/install"
-                className="hover:bg-sidebar-accent/60"
-                activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                className="rounded-lg hover:bg-sidebar-accent transition-all duration-200"
+                activeClassName={activeClasses}
                 onClick={closeSidebar}
               >
-                <Download className="mr-2 h-4 w-4 shrink-0 text-indigo-500" />
+                <Download className="mr-2 h-4 w-4 shrink-0" />
                 {!collapsed && <span>Install App</span>}
               </NavLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={handleRefresh} className="hover:bg-sidebar-accent/60 cursor-pointer">
-              <RefreshCw className="mr-2 h-4 w-4 shrink-0 text-teal-500" />
+            <SidebarMenuButton onClick={handleRefresh} className="rounded-lg hover:bg-sidebar-accent transition-all duration-200 cursor-pointer">
+              <RefreshCw className="mr-2 h-4 w-4 shrink-0" />
               {!collapsed && <span>Refresh App</span>}
             </SidebarMenuButton>
           </SidebarMenuItem>
