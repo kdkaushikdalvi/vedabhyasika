@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import logo from "@/assets/logo.png";
+import logoWide from "@/assets/logo-wide.png";
 import { HALLS } from "@/lib/constants";
 
 import {
@@ -95,14 +96,7 @@ export function AppSidebar() {
               className="h-10 w-10 shrink-0 rounded-full ring-2 ring-white/30 shadow-lg"
             />
             {!collapsed && (
-              <div className="min-w-0">
-                <h1 className="text-sm font-bold leading-tight text-white truncate">
-                  वेद अभ्यासिका
-                </h1>
-                <p className="text-xs text-white/70 truncate">
-                  शाखा क्र. 01 | महादेवनगर
-                </p>
-              </div>
+              <img src={logoWide} alt="वेद अभ्यासिका" className="h-8 w-auto brightness-0 invert opacity-90" />
             )}
           </div>
         </SidebarHeader>
