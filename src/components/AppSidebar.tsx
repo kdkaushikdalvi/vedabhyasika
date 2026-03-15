@@ -11,8 +11,8 @@ import {
   Building2,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
+import { useLocation } from "react-router-dom";
 import logo from "@/assets/logo.png";
-import logoWide from "@/assets/logo-wide.png";
 import { HALLS } from "@/lib/constants";
 
 import {
@@ -57,13 +57,7 @@ const infoNav = [
 export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
-
-  const handleRefresh = () => {
-    if ("caches" in window) {
-      caches.keys().then((names) => names.forEach((name) => caches.delete(name)));
-    }
-    window.location.reload();
-  };
+  const location = useLocation();
 
   const renderItems = (items: { title: string; url: string; icon: React.ComponentType<{ className?: string }> }[]) => (
     <SidebarMenu>
@@ -73,8 +67,8 @@ export function AppSidebar() {
             <NavLink
               to={item.url}
               end={item.url === "/"}
-              className="hover:bg-white/10 transition-colors rounded-lg"
-              activeClassName="bg-white/20 text-white font-semibold shadow-sm"
+              className="hover:bg-sidebar-accent/60"
+              activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
             >
               <item.icon className="mr-2 h-4 w-4 shrink-0" />
               {!collapsed && <span>{item.title}</span>}
@@ -86,81 +80,61 @@ export function AppSidebar() {
   );
 
   return (
-    <Sidebar collapsible="icon" className="border-none">
-      <div className="flex flex-col h-full bg-gradient-to-b from-[hsl(263,84%,52%)] via-[hsl(270,76%,55%)] to-[hsl(280,70%,50%)] text-white">
-        <SidebarHeader className="p-4">
-          <div className="flex items-center gap-3">
-            <img
-              src={logo}
-              alt="वेद अभ्यासिका"
-              className="h-10 w-10 shrink-0 rounded-full ring-2 ring-white/30 shadow-lg"
-            />
-            {!collapsed && (
-              <img src={logoWide} alt="वेद अभ्यासिका" className="h-8 w-auto brightness-0 invert opacity-90" />
-            )}
-          </div>
-        </SidebarHeader>
+    <Sidebar collapsible="icon">
+      <SidebarHeader className="p-4">
+        <div className="flex items-center gap-3">
+          <img src={logo} alt="वेद अभ्यासिका" className="h-10 w-auto shrink-0" />
+          {!collapsed && (
+            <div className="min-w-0">
+              <h1 className="text-sm font-semibold leading-tight text-sidebar-foreground truncate">
+                वेद अभ्यासिका
+              </h1>
+              <p className="text-xs text-muted-foreground truncate">
+                शाखा क्र. 01 | महादेवनगर
+              </p>
+            </div>
+          )}
+        </div>
+      </SidebarHeader>
 
-        <SidebarContent className="px-2 flex-1">
-          <SidebarGroup>
-            <SidebarGroupContent>{renderItems(mainNav)}</SidebarGroupContent>
-          </SidebarGroup>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent>{renderItems(mainNav)}</SidebarGroupContent>
+        </SidebarGroup>
 
-          <SidebarGroup>
-            <SidebarGroupLabel className="text-white/50 text-xs uppercase tracking-wider">
-              Halls
-            </SidebarGroupLabel>
-            <SidebarGroupContent>{renderItems(hallNav)}</SidebarGroupContent>
-          </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Halls</SidebarGroupLabel>
+          <SidebarGroupContent>{renderItems(hallNav)}</SidebarGroupContent>
+        </SidebarGroup>
 
-          <SidebarGroup>
-            <SidebarGroupLabel className="text-white/50 text-xs uppercase tracking-wider">
-              Manage
-            </SidebarGroupLabel>
-            <SidebarGroupContent>{renderItems(manageNav)}</SidebarGroupContent>
-          </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Manage</SidebarGroupLabel>
+          <SidebarGroupContent>{renderItems(manageNav)}</SidebarGroupContent>
+        </SidebarGroup>
 
-          <SidebarGroup>
-            <SidebarGroupLabel className="text-white/50 text-xs uppercase tracking-wider">
-              Insights
-            </SidebarGroupLabel>
-            <SidebarGroupContent>{renderItems(insightNav)}</SidebarGroupContent>
-          </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Insights</SidebarGroupLabel>
+          <SidebarGroupContent>{renderItems(insightNav)}</SidebarGroupContent>
+        </SidebarGroup>
 
-          <SidebarGroup>
-            <SidebarGroupLabel className="text-white/50 text-xs uppercase tracking-wider">
-              Info
-            </SidebarGroupLabel>
-            <SidebarGroupContent>{renderItems(infoNav)}</SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Info</SidebarGroupLabel>
+          <SidebarGroupContent>{renderItems(infoNav)}</SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
 
-        <SidebarFooter className="p-2 space-y-1">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <NavLink
-                  to="/install"
-                  className="hover:bg-white/10 transition-colors rounded-lg"
-                  activeClassName="bg-white/20 text-white font-semibold"
-                >
-                  <Download className="mr-2 h-4 w-4 shrink-0" />
-                  {!collapsed && <span>Install App</span>}
-                </NavLink>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                onClick={handleRefresh}
-                className="hover:bg-white/10 transition-colors rounded-lg cursor-pointer text-white/80 hover:text-white"
-              >
-                <RefreshCw className="mr-2 h-4 w-4 shrink-0" />
-                {!collapsed && <span>Refresh App</span>}
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-      </div>
+      <SidebarFooter className="p-2">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <NavLink to="/install" className="hover:bg-sidebar-accent/60" activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium">
+                <Download className="mr-2 h-4 w-4 shrink-0" />
+                {!collapsed && <span>Install App</span>}
+              </NavLink>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
