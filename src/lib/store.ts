@@ -77,9 +77,9 @@ export function useStore() {
   });
 
   const addStudent = useCallback(
-    (data: { full_name: string; mobile_number: string; pin?: string; hall_name: string; desk_number: number }) => {
-      const today = new Date();
-      const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    (data: { full_name: string; mobile_number: string; pin?: string; hall_name: string; desk_number: number; start_date?: string }) => {
+      const start = data.start_date ? new Date(data.start_date) : new Date();
+      const endOfMonth = new Date(start.getFullYear(), start.getMonth() + 1, 0);
       const studentId = `student-${Date.now()}`;
 
       const student: Student = {
@@ -88,7 +88,7 @@ export function useStore() {
         mobile_number: data.mobile_number,
         pin: data.pin,
         status: "active",
-        created_at: today.toISOString(),
+        created_at: start.toISOString(),
       };
 
       const allocation: Allocation = {
@@ -96,7 +96,7 @@ export function useStore() {
         student_id: studentId,
         hall_name: data.hall_name,
         desk_number: data.desk_number,
-        start_date: today.toISOString(),
+        start_date: start.toISOString(),
         end_date: endOfMonth.toISOString(),
         active: true,
       };
