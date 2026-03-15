@@ -9,15 +9,11 @@ import {
   Download,
   RefreshCw,
   Building2,
-  ChevronDown,
-  Sparkles,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { BRANCHES } from "@/lib/constants";
-import { useState } from "react";
 
 import {
   Sidebar,
@@ -32,11 +28,8 @@ import {
   SidebarFooter,
   useSidebar,
 } from "@/components/ui/sidebar";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+
+
 
 const manageNav = [
   { title: "Students", url: "/students", icon: Users },
@@ -57,7 +50,7 @@ export function AppSidebar() {
   const { state, setOpenMobile, isMobile } = useSidebar();
   const collapsed = state === "collapsed";
   const location = useLocation();
-  const [openBranch, setOpenBranch] = useState<string>(BRANCHES[0].id);
+  
 
   const closeSidebar = () => {
     if (isMobile) setOpenMobile(false);
@@ -133,45 +126,36 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             {BRANCHES.map((branch) => (
-              <Collapsible
-                key={branch.id}
-                open={openBranch === branch.id}
-                onOpenChange={(open) => setOpenBranch(open ? branch.id : "")}
-              >
-                <CollapsibleTrigger className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium hover:bg-sidebar-accent transition-all duration-200 group">
+              <div key={branch.id}>
+                <div className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium group">
                   <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/10 shrink-0">
                     <Building2 className="h-3.5 w-3.5 text-primary" />
                   </div>
                   {!collapsed && (
-                    <>
-                      <span className="flex-1 text-left truncate">{branch.name}</span>
-                      <ChevronDown className={`h-3.5 w-3.5 shrink-0 text-sidebar-foreground/40 transition-transform duration-300 ${openBranch === branch.id ? "rotate-180" : ""}`} />
-                    </>
+                    <span className="flex-1 text-left truncate">{branch.name}</span>
                   )}
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenu className="pl-4 mt-1 space-y-0.5 border-l-2 border-primary/10 ml-4">
-                    {branch.halls.map((hall) => {
-                      const isActive = location.pathname === `/hall/${hall.id}`;
-                      return (
-                        <SidebarMenuItem key={hall.id}>
-                          <SidebarMenuButton asChild>
-                            <NavLink
-                              to={`/hall/${hall.id}`}
-                              className={navLinkClasses}
-                              activeClassName={activeClasses}
-                              onClick={closeSidebar}
-                            >
-                              <span className={`h-2 w-2 rounded-full mr-2 shrink-0 transition-colors ${isActive ? "bg-primary-foreground" : "bg-primary/40"}`} />
-                              {!collapsed && <span>{hall.name}</span>}
-                            </NavLink>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      );
-                    })}
-                  </SidebarMenu>
-                </CollapsibleContent>
-              </Collapsible>
+                </div>
+                <SidebarMenu className="pl-4 mt-1 space-y-0.5 border-l-2 border-primary/10 ml-4">
+                  {branch.halls.map((hall) => {
+                    const isActive = location.pathname === `/hall/${hall.id}`;
+                    return (
+                      <SidebarMenuItem key={hall.id}>
+                        <SidebarMenuButton asChild>
+                          <NavLink
+                            to={`/hall/${hall.id}`}
+                            className={navLinkClasses}
+                            activeClassName={activeClasses}
+                            onClick={closeSidebar}
+                          >
+                            <span className={`h-2 w-2 rounded-full mr-2 shrink-0 transition-colors ${isActive ? "bg-primary-foreground" : "bg-primary/40"}`} />
+                            {!collapsed && <span>{hall.name}</span>}
+                          </NavLink>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
+              </div>
             ))}
           </SidebarGroupContent>
         </SidebarGroup>
