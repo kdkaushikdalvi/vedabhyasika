@@ -142,27 +142,26 @@ export function AppSidebar() {
                     <span className="flex-1 text-left truncate">{branch.name}</span>
                   )}
                 </div>
-                <div>
-                  <SidebarMenu className="pl-4 mt-1 space-y-0.5 border-l-2 border-primary/10 ml-4">
-                    {branch.halls.map((hall) => {
-                      const isActive = location.pathname === `/hall/${hall.id}`;
-                      return (
-                        <SidebarMenuItem key={hall.id}>
-                          <SidebarMenuButton asChild>
-                            <NavLink
-                              to={`/hall/${hall.id}`}
-                              className={navLinkClasses}
-                              activeClassName={activeClasses}
-                              onClick={closeSidebar}
-                            >
-                              <span className={`h-2 w-2 rounded-full mr-2 shrink-0 transition-colors ${isActive ? "bg-primary-foreground" : "bg-primary/40"}`} />
-                              {!collapsed && <span>{hall.name}</span>}
-                            </NavLink>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      );
-                    })}
-                  </SidebarMenu>
+                <SidebarMenu className="pl-4 mt-1 space-y-0.5 border-l-2 border-primary/10 ml-4">
+                  {branch.halls.map((hall) => {
+                    const isActive = location.pathname === `/hall/${hall.id}`;
+                    return (
+                      <SidebarMenuItem key={hall.id}>
+                        <SidebarMenuButton asChild>
+                          <NavLink
+                            to={`/hall/${hall.id}`}
+                            className={navLinkClasses}
+                            activeClassName={activeClasses}
+                            onClick={closeSidebar}
+                          >
+                            <span className={`h-2 w-2 rounded-full mr-2 shrink-0 transition-colors ${isActive ? "bg-primary-foreground" : "bg-primary/40"}`} />
+                            {!collapsed && <span>{hall.name}</span>}
+                          </NavLink>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
               </div>
             ))}
           </SidebarGroupContent>
