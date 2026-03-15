@@ -163,8 +163,7 @@ export function AppSidebar() {
                       );
                     })}
                   </SidebarMenu>
-                </CollapsibleContent>
-              </Collapsible>
+              </div>
             ))}
           </SidebarGroupContent>
         </SidebarGroup>
