@@ -45,13 +45,13 @@
 
     --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 220 20% 14%;
+    --sidebar-background: 263 60% 98%;
+    --sidebar-foreground: 263 30% 20%;
     --sidebar-primary: 263 84% 58%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 263 84% 96%;
+    --sidebar-accent: 263 70% 94%;
     --sidebar-accent-foreground: 263 84% 40%;
-    --sidebar-border: 220 13% 91%;
+    --sidebar-border: 263 30% 90%;
     --sidebar-ring: 263 84% 58%;
 
     --desk-available: 142 71% 45%;
